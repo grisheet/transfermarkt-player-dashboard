@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfermarkt Player Performance Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .feature-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tech-stack h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: #ffd700;
+            color: #333;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: #ffed4e;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ffd700;
+        }
+
+        .demo-section p {
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ Transfermarkt Player Performance Dashboard</h1>
+            <p class="subtitle">
+                An advanced football analytics platform that scrapes Transfermarkt data, performs machine learning clustering analysis, 
+                and generates interactive visualizations to discover player archetypes and performance patterns.
+            </p>
+        </header>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>🎯 Data Collection</h3>
+                <p>
+                    Automated web scraping from Transfermarkt covering multiple leagues including Premier League, 
+                    La Liga, Bundesliga, Serie A, and Ligue 1. Extracts player market values, positions, ages, and club affiliations.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>🧠 Machine Learning</h3>
+                <p>
+                    KMeans clustering algorithm groups players by style proxies derived from position, age, market value, 
+                    and league strength. PCA dimensionality reduction enables 2D visualization of complex player profiles.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>📊 Interactive Visualizations</h3>
+                <p>
+                    Beautiful Plotly and Seaborn charts showing player clusters, position distributions, and market value analysis. 
+                    Hover over data points to explore individual player details dynamically.
+                </p>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Dashboard Output</h2>
+            <p>
+                The dashboard.py script generates comprehensive analytics including player clustering, 
+                CSV datasets, PNG visualizations, and an interactive HTML dashboard.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Players Analyzed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">League Sources</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Player Clusters</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">€78.6m</div>
+                    <div class="stat-label">Avg Market Value</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h2>Tech Stack</h2>
+            <div class="tech-list">
+                <span class="tech-badge">Python 3</span>
+                <span class="tech-badge">Pandas</span>
+                <span class="tech-badge">Scikit-learn</span>
+                <span class="tech-badge">Plotly</span>
+                <span class="tech-badge">Seaborn</span>
+                <span class="tech-badge">Matplotlib</span>
+                <span class="tech-badge">Requests</span>
+                <span class="tech-badge">BeautifulSoup</span>
+                <span class="tech-badge">NumPy</span>
+                <span class="tech-badge">KMeans Clustering</span>
+                <span class="tech-badge">PCA</span>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 style="margin-bottom: 30px;">Get Started</h2>
+            <a href="https://github.com/grisheet/transfermarkt-player-dashboard" class="btn btn-primary" target="_blank">
+                View on GitHub
+            </a>
+            <a href="https://github.com/grisheet/transfermarkt-player-dashboard/blob/main/dashboard.py" class="btn btn-secondary" target="_blank">
+                View Source Code
+            </a>
+        </div>
+
+        <div class="demo-section">
+            <h2>How to Run</h2>
+            <p style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <strong>1. Clone the repository:</strong><br>
+                <code style="background: rgba(0,0,0,0.3); padding: 10px; display: block; border-radius: 5px; margin: 10px 0;">
+                    git clone https://github.com/grisheet/transfermarkt-player-dashboard.git
+                </code>
+                
+                <strong>2. Install dependencies:</strong><br>
+                <code style="background: rgba(0,0,0,0.3); padding: 10px; display: block; border-radius: 5px; margin: 10px 0;">
+                    pip install -r requirements.txt
+                </code>
+                
+                <strong>3. Run the dashboard:</strong><br>
+                <code style="background: rgba(0,0,0,0.3); padding: 10px; display: block; border-radius: 5px; margin: 10px 0;">
+                    python dashboard.py
+                </code>
+                
+                <strong>4. Open the generated HTML:</strong><br>
+                <code style="background: rgba(0,0,0,0.3); padding: 10px; display: block; border-radius: 5px; margin: 10px 0;">
+                    open player_dashboard.html
+                </code>
+            </p>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ using Python, Machine Learning, and Data Visualization</p>
+            <p style="margin-top: 10px;">© 2026 Transfermarkt Player Performance Dashboard</p>
+        </footer>
+    </div>
+</body>
+</html>
